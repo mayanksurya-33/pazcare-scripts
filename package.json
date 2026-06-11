@@ -1,0 +1,28 @@
+{
+  "name": "pazcare-scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/*.js --minify --outdir=dist --entry-names=[name].min && postcss src/*.css --dir dist --ext .min.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayanksurya-33/pazcare-scripts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mayanksurya-33/pazcare-scripts/issues"
+  },
+  "homepage": "https://github.com/mayanksurya-33/pazcare-scripts#readme",
+  "devDependencies": {
+    "cssnano": "^8.0.2",
+    "esbuild": "^0.28.0",
+    "postcss": "^8.5.15",
+    "postcss-cli": "^11.0.1"
+  }
+}
