@@ -212,7 +212,7 @@
     if (meta.dependsOn) {
       const dep = document.createElement("div");
       dep.className = "dep";
-      dep.textContent = "↳ " + meta.dependsOn;
+      dep.textContent = meta.dependsOn;
       card.appendChild(dep);
     }
     if (meta.note) {
