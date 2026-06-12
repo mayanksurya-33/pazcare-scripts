@@ -137,6 +137,7 @@
         self.move(-1);
       } else if (e.key === "Enter") {
         e.preventDefault();
+        e.stopPropagation();
         var items = self.items();
         if (self.activeIndex >= 0 && items[self.activeIndex]) {
           window.location.href = items[self.activeIndex].href;
