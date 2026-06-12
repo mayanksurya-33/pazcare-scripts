@@ -1,0 +1,27 @@
+.paz-gloss-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+}
+.paz-gloss-elem[data-state='open'] .paz-gloss-content {
+  max-height: max-content;
+  transition: max-height 0.4s ease;
+  padding-top: 32px;
+}
+.paz-faq-btn-wrapper {
+  transform: rotate(45deg);
+  transition: transform 0.5s ease;
+}
+.paz-gloss-elem[data-state='open'] .paz-faq-btn-wrapper {
+  transform: rotate(-360deg);
+}
+.paz-faq-answer .w-richtext p {
+  margin-bottom: 0;
+}
+.paz-glossary-card .text-color-gray {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
