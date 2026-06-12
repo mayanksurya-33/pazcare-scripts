@@ -174,6 +174,20 @@
     return { letters: keys, rendered: items.length };
   }
 
+  // Inject a centered spinner into the container while data loads.
+  // render() wipes the container, so the loader clears itself automatically.
+  function renderLoading(target, label) {
+    var container = typeof target === 'string'
+      ? document.querySelector(target)
+      : target;
+    if (!container) { console.warn('[PazGlossary] container not found:', target); return; }
+    container.innerHTML =
+      '<div class="paz-gloss-loader" role="status" aria-live="polite">' +
+        '<div class="paz-gloss-spinner"></div>' +
+        (label ? '<div class="paz-gloss-loader-text">' + label + '</div>' : '') +
+      '</div>';
+  }
+
   // Wire the standalone toggle used by non-renderer glossary elements
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.paz-gloss-elem').forEach(function (faq) {
@@ -184,5 +198,5 @@
     });
   });
 
-  global.PazGlossary = { render: render };
+  global.PazGlossary = { render: render, renderLoading: renderLoading };
 })(window);
