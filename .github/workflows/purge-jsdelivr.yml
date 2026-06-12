@@ -1,0 +1,24 @@
+name: Purge jsDelivr cache
+
+# Whenever built files land on main, tell jsDelivr to drop its cached
+# copies so the @main CDN URL serves the fresh build within ~1 minute.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/**'
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Purge every file in dist/ from the jsDelivr edge cache
+        run: |
+          for f in dist/*; do
+            echo "Purging $f"
+            curl -sf "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@main/$f" \
+              -o /dev/null -w "  -> HTTP %{http_code}\n" \
+              || echo "  -> purge request failed for $f"
+          done
