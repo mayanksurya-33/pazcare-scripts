@@ -136,9 +136,9 @@
         e.preventDefault();
         self.move(-1);
       } else if (e.key === "Enter") {
+        e.preventDefault();
         var items = self.items();
         if (self.activeIndex >= 0 && items[self.activeIndex]) {
-          e.preventDefault();
           window.location.href = items[self.activeIndex].href;
         }
       } else if (e.key === "Escape") {
