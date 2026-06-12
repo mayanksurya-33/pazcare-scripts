@@ -1,7 +1,7 @@
 (function (global) {
   'use strict';
 
-  var DEFAULTS = {
+  const DEFAULTS = {
     container: '#paz-gloss-container',
     data: [],
     summaryField: 'summary',
@@ -21,7 +21,7 @@
   };
 
   function el(tag, className, attrs) {
-    var n = document.createElement(tag);
+    const n = document.createElement(tag);
     if (className) n.className = className;
     if (attrs) Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
     return n;
@@ -29,10 +29,10 @@
 
   function pickText(fd, cfg) {
     if (!fd) return '';
-    var v = fd[cfg.summaryField];
+    const v = fd[cfg.summaryField];
     if (v != null && String(v).trim() !== '') return String(v).trim();
-    for (var i = 0; i < cfg.fallbackFields.length; i++) {
-      var f = fd[cfg.fallbackFields[i]];
+    for (let i = 0; i < cfg.fallbackFields.length; i++) {
+      const f = fd[cfg.fallbackFields[i]];
       if (f != null && String(f).trim() !== '') return String(f).trim();
     }
     return '';
@@ -43,10 +43,10 @@
       if (!it) return false;
       if (!cfg.includeDrafts && it.isDraft) return false;
       if (!cfg.includeArchived && it.isArchived) return false;
-      var fd = it.fieldData || it;
+      const fd = it.fieldData || it;
       return (fd.name || '').trim() !== '';
     }).map(function (it) {
-      var fd = it.fieldData || it;
+      const fd = it.fieldData || it;
       return {
         name: (fd.name || '').trim(),
         slug: (fd.slug || '').trim(),
@@ -56,14 +56,14 @@
   }
 
   function letterOf(name) {
-    var c = name.charAt(0).toUpperCase();
+    const c = name.charAt(0).toUpperCase();
     return /[A-Z]/.test(c) ? c : '#';
   }
 
   function groupByLetter(items) {
-    var map = {};
+    const map = {};
     items.forEach(function (it) {
-      var k = letterOf(it.name);
+      const k = letterOf(it.name);
       (map[k] = map[k] || []).push(it);
     });
     Object.keys(map).forEach(function (k) {
@@ -81,25 +81,25 @@
   }
 
   function buildCard(item, cfg) {
-    var card = el('div', 'paz-glossary-card');
+    const card = el('div', 'paz-glossary-card');
 
-    var h = el('h1', 'heading-style-h5');
+    const h = el('h1', 'heading-style-h5');
     h.textContent = item.name;
     card.appendChild(h);
 
     if (item.summary) {
-      var p = el('p', 'text-size-regular text-color-gray');
+      const p = el('p', 'text-size-regular text-color-gray');
       p.textContent = item.summary;
       card.appendChild(p);
     }
 
     if (cfg.showReadMore && item.slug) {
-      var a = el('a', 'paz-link text-color-primary w-inline-block',
+      const a = el('a', 'paz-link text-color-primary w-inline-block',
                 { href: cfg.slugBase + item.slug });
-      var flex = el('div', 'flex sb');
-      var label = el('p', 'text-size-regular');
+      const flex = el('div', 'flex sb');
+      const label = el('p', 'text-size-regular');
       label.textContent = cfg.readMoreText;
-      var arrow = el('img', null, { src: cfg.icons.arrow, loading: 'lazy', alt: '' });
+      const arrow = el('img', null, { src: cfg.icons.arrow, loading: 'lazy', alt: '' });
       flex.appendChild(label);
       flex.appendChild(arrow);
       a.appendChild(flex);
@@ -109,24 +109,24 @@
   }
 
   function buildGroup(letter, items, cfg, isFirst) {
-    var state = cfg.defaultOpen === 'all'                ? 'open'
-              : (cfg.defaultOpen === 'first' && isFirst) ? 'open'
-              : 'closed';
+    const state = cfg.defaultOpen === 'all'                ? 'open'
+                : (cfg.defaultOpen === 'first' && isFirst) ? 'open'
+                : 'closed';
 
-    var elem = el('div', 'paz-gloss-elem', { 'data-state': state });
+    const elem = el('div', 'paz-gloss-elem', { 'data-state': state });
 
-    var head = el('div', 'paz-gloss-heading-wrap');
-    var h4 = el('h4', 'heading-style-h4 paz-faq-heading');
+    const head = el('div', 'paz-gloss-heading-wrap');
+    const h4 = el('h4', 'heading-style-h4 paz-faq-heading');
     h4.textContent = letter;
 
-    var btn = el('div', 'paz-faq-btn-wrapper');
+    const btn = el('div', 'paz-faq-btn-wrapper');
     btn.appendChild(el('img', 'paz-faq-x-icon white', { src: cfg.icons.xWhite, loading: 'lazy', alt: '' }));
     btn.appendChild(el('img', 'paz-faq-x-icon black', { src: cfg.icons.xBlack, loading: 'lazy', alt: '' }));
 
     head.appendChild(h4);
     head.appendChild(btn);
 
-    var content = el('div', 'paz-gloss-content');
+    const content = el('div', 'paz-gloss-content');
     items.forEach(function (it) { content.appendChild(buildCard(it, cfg)); });
 
     elem.appendChild(head);
@@ -138,9 +138,9 @@
     if (container.__pazWired) return;
     container.__pazWired = true;
     container.addEventListener('click', function (e) {
-      var head = e.target.closest('.paz-gloss-heading-wrap');
+      const head = e.target.closest('.paz-gloss-heading-wrap');
       if (!head || !container.contains(head)) return;
-      var elem = head.closest('.paz-gloss-elem');
+      const elem = head.closest('.paz-gloss-elem');
       if (!elem) return;
       elem.setAttribute('data-state',
         elem.getAttribute('data-state') === 'open' ? 'closed' : 'open');
@@ -148,7 +148,7 @@
   }
 
   function render(userCfg) {
-    var cfg = {};
+    const cfg = {};
     Object.keys(DEFAULTS).forEach(function (k) { cfg[k] = DEFAULTS[k]; });
     Object.keys(userCfg || {}).forEach(function (k) {
       cfg[k] = (k === 'icons')
@@ -156,14 +156,14 @@
         : userCfg[k];
     });
 
-    var container = typeof cfg.container === 'string'
+    const container = typeof cfg.container === 'string'
       ? document.querySelector(cfg.container)
       : cfg.container;
     if (!container) { console.warn('[PazGlossary] container not found:', cfg.container); return; }
 
-    var items   = normalize(cfg.data || [], cfg);
-    var grouped = groupByLetter(items);
-    var keys    = sortedKeys(grouped);
+    const items   = normalize(cfg.data || [], cfg);
+    const grouped = groupByLetter(items);
+    const keys    = sortedKeys(grouped);
 
     container.innerHTML = '';
     keys.forEach(function (letter, i) {
@@ -177,7 +177,7 @@
   // Inject a centered spinner into the container while data loads.
   // render() wipes the container, so the loader clears itself automatically.
   function renderLoading(target, label) {
-    var container = typeof target === 'string'
+    const container = typeof target === 'string'
       ? document.querySelector(target)
       : target;
     if (!container) { console.warn('[PazGlossary] container not found:', target); return; }
@@ -192,7 +192,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.paz-gloss-elem').forEach(function (faq) {
       faq.addEventListener('click', function () {
-        var isOpen = this.getAttribute('data-state') === 'open';
+        const isOpen = this.getAttribute('data-state') === 'open';
         this.setAttribute('data-state', isOpen ? 'closed' : 'open');
       });
     });

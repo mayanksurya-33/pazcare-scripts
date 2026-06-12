@@ -14,6 +14,7 @@
     --text: #151515;
     --code-bg: #1e1e2a;
     --ok: #1f9d55;
+    --warn: #b8860b;
   }
   * { box-sizing: border-box; }
   body {
@@ -23,60 +24,64 @@
     background: var(--light-grey);
     line-height: 1.5;
   }
-  header {
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    padding: 32px 24px;
-  }
+  header { background: #fff; border-bottom: 1px solid var(--border); padding: 32px 24px; }
   .wrap { max-width: 920px; margin: 0 auto; }
   header h1 { margin: 0 0 6px; font-size: 26px; }
   header p { margin: 0; color: var(--dark-grey); font-size: 14px; }
   .base {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 14px; padding: 8px 12px;
-    background: var(--light-grey); border: 1px solid var(--border);
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+    padding: 8px 12px; background: var(--light-grey); border: 1px solid var(--border);
     border-radius: 8px; font-size: 12px; color: var(--dark-grey);
   }
   .base code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--text); }
 
   main { padding: 28px 24px 64px; }
-  .card {
-    background: #fff; border: 1px solid var(--border);
-    border-radius: 14px; padding: 22px; margin-bottom: 20px;
-  }
-  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  .card h2 { margin: 0; font-size: 19px; }
-  .card .desc { margin: 6px 0 0; color: var(--dark-grey); font-size: 14px; }
-  .badge {
-    display: inline-block; margin-top: 10px; padding: 4px 10px;
-    background: var(--purple-tint); color: #5b3fb0;
-    border-radius: 999px; font-size: 11px; font-weight: 600;
-  }
+  .status-msg { text-align: center; color: var(--dark-grey); padding: 48px 0; font-size: 14px; }
 
-  .block { margin-top: 18px; }
-  .block-head {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 8px;
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; }
+  .card-head {
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
+    padding: 18px 22px; user-select: none;
   }
+  .card-head:hover { background: #fafafa; }
+  .card-head h2 { margin: 0; font-size: 18px; flex: 0 0 auto; }
+  .card-head .desc { margin: 0; color: var(--dark-grey); font-size: 13px; flex: 1 1 auto; }
+  .chevron { transition: transform 0.2s ease; color: var(--dark-grey); flex: 0 0 auto; }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  .pill { flex: 0 0 auto; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 999px; }
+  .pill.experimental { background: #fff3cd; color: var(--warn); }
+
+  .card-body { display: none; padding: 0 22px 22px; }
+  .card.open .card-body { display: block; }
+
+  .badge {
+    display: inline-block; margin: 0 0 6px; padding: 5px 11px;
+    background: var(--purple-tint); color: #5b3fb0; border-radius: 8px; font-size: 12px; font-weight: 500;
+  }
+  .note { margin: 0 0 6px; padding: 5px 11px; background: #fff3cd; color: var(--warn); border-radius: 8px; font-size: 12px; }
+
+  .block { margin-top: 16px; }
+  .block-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
   .block-head span { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--dark-grey); }
-  .copy-btn {
-    border: none; cursor: pointer;
-    background: var(--purple); color: #fff;
-    padding: 7px 14px; border-radius: 8px;
-    font-size: 12px; font-weight: 600;
-    transition: background 0.15s, transform 0.1s;
+  .btn-row { display: flex; gap: 8px; }
+  .copy-btn, .docs-btn {
+    border: none; cursor: pointer; padding: 7px 14px; border-radius: 8px;
+    font-size: 12px; font-weight: 600; transition: background 0.15s, transform 0.1s; text-decoration: none; display: inline-block;
   }
+  .copy-btn { background: var(--purple); color: #fff; }
   .copy-btn:hover { background: #875fe6; }
   .copy-btn:active { transform: scale(0.97); }
   .copy-btn.copied { background: var(--ok); }
+  .docs-btn { background: #fff; color: var(--purple); border: 1px solid var(--purple); }
+  .docs-btn:hover { background: var(--purple-tint); }
 
   pre {
-    margin: 0; background: var(--code-bg); color: #e9e9f2;
-    border-radius: 10px; padding: 16px; overflow-x: auto;
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: 12.5px; line-height: 1.6;
-    white-space: pre;
+    margin: 0; background: var(--code-bg); color: #e9e9f2; border-radius: 10px; padding: 16px;
+    overflow-x: auto; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.5px; line-height: 1.6; white-space: pre;
   }
+  .no-usage { color: var(--dark-grey); font-size: 13px; font-style: italic; margin: 16px 0 0; }
   footer { text-align: center; color: var(--dark-grey); font-size: 12px; padding: 0 24px 40px; }
 </style>
 </head>
@@ -84,92 +89,28 @@
   <header>
     <div class="wrap">
       <h1>Pazcare Component Library</h1>
-      <p>Click <strong>Copy embed</strong> for the CDN tags, or <strong>Copy usage</strong> for the ready-to-paste markup.</p>
-      <div class="base">Served from <code id="base"></code></div>
+      <p>Live from GitHub — components are auto-discovered from <code>dist/</code>. Click one to expand.</p>
+      <div class="base">CDN base: <code id="base"></code></div>
     </div>
   </header>
 
-  <main class="wrap" id="cards"></main>
+  <main class="wrap" id="cards">
+    <div class="status-msg" id="status">Loading components from GitHub…</div>
+  </main>
 
-  <footer>Auto-refreshes on push via jsDelivr · add a component by appending one entry to the <code>COMPONENTS</code> array.</footer>
-
-<script>
-  const BASE = "https://cdn.jsdelivr.net/gh/mayanksurya-33/pazcare-scripts@main/dist/";
-
-  const COMPONENTS = [
-    {
-      id: "searchbar",
-      name: "CMS Searchbar",
-      desc: "Client-side search over a Webflow CMS collection. Fetches once, caches in localStorage, filters in-browser. Press Enter is blocked so Webflow's search page never hijacks it.",
-      css: "searchbar.min.css",
-      js: "searchbar.min.js",
-      usage:
-`<div class="search-container">
-  <input id="searchInput" type="text" placeholder="Search..." />
-  <div id="searchResults"></div>
-</div>
+  <footer>
+    Auto-discovered via jsDelivr · descriptions &amp; usage live in
+    <code>components.json</code> · add a script + push, it appears here.
+  </footer>
 
 <script>
-  WebflowCMS.init({
-    collection: 'hr-glossaries',
-    fields: ['name', 'slug', 'summary', 'meta-description'],
-    saveTo: 'glossaryData',
-    search: { input: '#searchInput', results: '#searchResults' },
-  });
-<\/script>`
-    },
-    {
-      id: "glossary",
-      name: "Glossary Renderer",
-      desc: "Renders a CMS collection as an A–Z accordion glossary, with a built-in loading spinner that clears itself when content arrives.",
-      dependsOn: "Requires the CMS Searchbar script — it uses WebflowCMS to load the data.",
-      css: "glossary.min.css",
-      js: "glossary.min.js",
-      usage:
-`<div id="paz-gloss-container"></div>
+  const REPO = "mayanksurya-33/pazcare-scripts";
+  const REF = "main";
+  const CDN = "https://cdn.jsdelivr.net/gh/" + REPO + "@" + REF + "/dist/";
+  const LIST_API = "https://data.jsdelivr.com/v1/packages/gh/" + REPO + "@" + REF;
+  const META_URL = "https://raw.githubusercontent.com/" + REPO + "/" + REF + "/components.json";
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    PazGlossary.renderLoading('#paz-gloss-container', 'Loading glossary…');
-
-    WebflowCMS.init({
-      collection: 'hr-glossaries',
-      fields: ['name', 'slug', 'summary', 'meta-description'],
-      saveTo: 'glossaryData',
-      search: { input: '#searchInput', results: '#searchResults' },
-      onLoad: function (items) {
-        PazGlossary.render({
-          container: '#paz-gloss-container',
-          data: items,
-          slugBase: '/hr-glossaries/',
-          defaultOpen: 'all',
-        });
-      },
-    });
-  });
-<\/script>`
-    },
-    {
-      id: "modal",
-      name: "Modal",
-      desc: "Accessible modal engine. Auto-injects the close button (no need to add one per modal), closes on overlay click, Esc, or any [data-paz-modal-close]. Open via a data attribute or PazModal.open('id').",
-      css: "modal.min.css",
-      js: "modal.min.js",
-      usage:
-`<!-- Trigger -->
-<button data-paz-modal="demo-modal">Open modal</button>
-
-<!-- Modal (no close button needed — it's injected) -->
-<div id="demo-modal" class="paz-modal">
-  <div class="paz-modal-card">
-    Your content here…
-  </div>
-</div>`
-    }
-  ];
-
-  // Clipboard API works in secure contexts (incl. file://) but can be blocked;
-  // fall back to a hidden textarea + execCommand when it isn't available.
+  // ---- clipboard with file:// fallback ----
   function copyText(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
@@ -178,93 +119,178 @@
   }
   function legacyCopy(text) {
     return new Promise(function (resolve) {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
       try { document.execCommand("copy"); } catch (e) {}
-      document.body.removeChild(ta);
-      resolve();
+      document.body.removeChild(ta); resolve();
     });
   }
 
-  function embedFor(c) {
-    var lines = [];
-    if (c.css) lines.push('<link rel="stylesheet" href="' + BASE + c.css + '">');
-    if (c.js) lines.push('<script src="' + BASE + c.js + '" defer><\/script>');
+  // ---- discover component files in dist/ ----
+  function distFiles(tree) {
+    const dist = (tree.files || []).find(function (f) { return f.type === "directory" && f.name === "dist"; });
+    return dist ? dist.files.filter(function (f) { return f.type === "file"; }).map(function (f) { return f.name; }) : [];
+  }
+  function groupComponents(files) {
+    const map = {};
+    files.forEach(function (name) {
+      const m = name.match(/^(.*)\.min\.(js|css)$/);
+      if (!m) return;
+      const id = m[1], ext = m[2];
+      map[id] = map[id] || { id: id, js: false, css: false };
+      map[id][ext === "js" ? "js" : "css"] = true;
+    });
+    return map;
+  }
+
+  function embedFor(comp) {
+    const lines = [];
+    if (comp.css) lines.push('<link rel="stylesheet" href="' + CDN + comp.id + '.min.css">');
+    if (comp.js) lines.push('<script src="' + CDN + comp.id + '.min.js" defer><\/script>');
     return lines.join("\n");
   }
 
-  function block(label, code) {
-    var wrap = document.createElement("div");
+  function copyBlock(label, code) {
+    const wrap = document.createElement("div");
     wrap.className = "block";
-
-    var head = document.createElement("div");
+    const head = document.createElement("div");
     head.className = "block-head";
-    var name = document.createElement("span");
+    const name = document.createElement("span");
     name.textContent = label;
-    var btn = document.createElement("button");
+    const btn = document.createElement("button");
     btn.className = "copy-btn";
     btn.textContent = "Copy " + label.toLowerCase();
-    head.appendChild(name);
-    head.appendChild(btn);
-
-    var pre = document.createElement("pre");
-    pre.textContent = code;
-
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
       copyText(code).then(function () {
-        btn.textContent = "Copied!";
-        btn.classList.add("copied");
-        setTimeout(function () {
-          btn.textContent = "Copy " + label.toLowerCase();
-          btn.classList.remove("copied");
-        }, 1500);
+        btn.textContent = "Copied!"; btn.classList.add("copied");
+        setTimeout(function () { btn.textContent = "Copy " + label.toLowerCase(); btn.classList.remove("copied"); }, 1500);
       });
     });
-
-    wrap.appendChild(head);
-    wrap.appendChild(pre);
+    head.appendChild(name); head.appendChild(btn);
+    const pre = document.createElement("pre");
+    pre.textContent = code;
+    wrap.appendChild(head); wrap.appendChild(pre);
     return wrap;
   }
 
-  function render() {
-    document.getElementById("base").textContent = BASE;
-    var host = document.getElementById("cards");
+  function buildCard(comp, meta) {
+    const card = document.createElement("div");
+    card.className = "card";
 
-    COMPONENTS.forEach(function (c) {
-      var card = document.createElement("div");
-      card.className = "card";
+    const head = document.createElement("div");
+    head.className = "card-head";
 
-      var head = document.createElement("div");
-      head.className = "card-head";
-      var h2 = document.createElement("h2");
-      h2.textContent = c.name;
-      head.appendChild(h2);
-      card.appendChild(head);
+    const h2 = document.createElement("h2");
+    h2.textContent = meta.name || comp.id;
+    head.appendChild(h2);
 
-      var desc = document.createElement("p");
-      desc.className = "desc";
-      desc.textContent = c.desc;
-      card.appendChild(desc);
+    if (meta.status === "experimental") {
+      const pill = document.createElement("span");
+      pill.className = "pill experimental";
+      pill.textContent = "Experimental";
+      head.appendChild(pill);
+    }
 
-      if (c.dependsOn) {
-        var badge = document.createElement("span");
-        badge.className = "badge";
-        badge.textContent = "↳ " + c.dependsOn;
-        card.appendChild(badge);
-      }
+    const desc = document.createElement("p");
+    desc.className = "desc";
+    desc.textContent = meta.description || "";
+    head.appendChild(desc);
 
-      card.appendChild(block("Embed", embedFor(c)));
-      card.appendChild(block("Usage", c.usage));
+    const chev = document.createElement("span");
+    chev.className = "chevron";
+    chev.textContent = "▾";
+    head.appendChild(chev);
 
-      host.appendChild(card);
-    });
+    head.addEventListener("click", function () { card.classList.toggle("open"); });
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+
+    if (meta.dependsOn) {
+      const badge = document.createElement("div");
+      badge.className = "badge";
+      badge.textContent = "↳ " + meta.dependsOn;
+      body.appendChild(badge);
+    }
+    if (meta.note) {
+      const note = document.createElement("div");
+      note.className = "note";
+      note.textContent = "⚠ " + meta.note;
+      body.appendChild(note);
+    }
+
+    body.appendChild(copyBlock("Embed", embedFor(comp)));
+
+    if (meta.usage) {
+      body.appendChild(copyBlock("Usage", meta.usage));
+    } else {
+      const no = document.createElement("p");
+      no.className = "no-usage";
+      no.textContent = "No usage example yet — add one in components.json.";
+      body.appendChild(no);
+    }
+
+    if (meta.docs) {
+      const block = document.createElement("div");
+      block.className = "block";
+      const a = document.createElement("a");
+      a.className = "docs-btn";
+      a.href = meta.docs;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = "Read documentation →";
+      block.appendChild(a);
+      body.appendChild(block);
+    }
+
+    card.appendChild(head);
+    card.appendChild(body);
+    return card;
   }
 
-  render();
+  function orderedIds(components, metaMap) {
+    // metadata-defined order first, then any extra discovered ids alphabetically
+    const inMeta = Object.keys(metaMap).filter(function (id) { return components[id]; });
+    const extras = Object.keys(components).filter(function (id) { return metaMap[id] === undefined; }).sort();
+    return inMeta.concat(extras);
+  }
+
+  function render(components, metaMap) {
+    const host = document.getElementById("cards");
+    host.innerHTML = "";
+    document.getElementById("base").textContent = CDN;
+
+    const ids = orderedIds(components, metaMap);
+    let shown = 0;
+    ids.forEach(function (id) {
+      const meta = metaMap[id] || {};
+      if (meta.hidden) return;
+      host.appendChild(buildCard(components[id], meta));
+      shown++;
+    });
+
+    if (!shown) {
+      host.innerHTML = '<div class="status-msg">No components found in dist/.</div>';
+    }
+  }
+
+  function fail(msg) {
+    document.getElementById("status").textContent = msg;
+  }
+
+  Promise.all([
+    fetch(LIST_API).then(function (r) { if (!r.ok) throw new Error("list " + r.status); return r.json(); }),
+    fetch(META_URL).then(function (r) { return r.ok ? r.json() : { components: {} }; }).catch(function () { return { components: {} }; })
+  ]).then(function (res) {
+    const components = groupComponents(distFiles(res[0]));
+    const metaMap = (res[1] && res[1].components) || {};
+    render(components, metaMap);
+  }).catch(function (err) {
+    console.error(err);
+    fail("Couldn't load the component list from GitHub. Check your connection and refresh.");
+  });
 </script>
 </body>
 </html>

@@ -1,0 +1,33 @@
+{
+  "_comment": "Source of truth for the component library page. Files in dist/ are auto-discovered; this file adds the human bits (name, description, usage, docs). Add an entry keyed by the component's file basename. Omit an entry and the component still appears with embed tags only. Set hidden:true to suppress (e.g. stubs).",
+  "components": {
+    "searchbar": {
+      "name": "CMS Searchbar",
+      "description": "Client-side search over a Webflow CMS collection. Fetches once, caches in localStorage, filters in-browser. Enter is blocked so Webflow's search page never hijacks it.",
+      "docs": "",
+      "usage": "<div class=\"search-container\">\n  <input id=\"searchInput\" type=\"text\" placeholder=\"Search...\" />\n  <div id=\"searchResults\"></div>\n</div>\n\n<script>\n  WebflowCMS.init({\n    collection: 'hr-glossaries',\n    fields: ['name', 'slug', 'summary', 'meta-description'],\n    saveTo: 'glossaryData',\n    search: { input: '#searchInput', results: '#searchResults' },\n  });\n<\/script>"
+    },
+    "glossary": {
+      "name": "Glossary Renderer",
+      "description": "Renders a CMS collection as an A–Z accordion glossary, with a built-in loading spinner that clears itself when content arrives.",
+      "dependsOn": "Requires the CMS Searchbar script — it uses WebflowCMS to load the data.",
+      "docs": "",
+      "usage": "<div id=\"paz-gloss-container\"></div>\n\n<script>\n  document.addEventListener('DOMContentLoaded', function () {\n    PazGlossary.renderLoading('#paz-gloss-container', 'Loading glossary…');\n\n    WebflowCMS.init({\n      collection: 'hr-glossaries',\n      fields: ['name', 'slug', 'summary', 'meta-description'],\n      saveTo: 'glossaryData',\n      search: { input: '#searchInput', results: '#searchResults' },\n      onLoad: function (items) {\n        PazGlossary.render({\n          container: '#paz-gloss-container',\n          data: items,\n          slugBase: '/hr-glossaries/',\n          defaultOpen: 'all',\n        });\n      },\n    });\n  });\n<\/script>"
+    },
+    "modal": {
+      "name": "Modal",
+      "description": "Accessible modal engine. Auto-injects the close button (no need to add one per modal), closes on overlay click, Esc, or any [data-paz-modal-close]. Open via a data attribute or PazModal.open('id').",
+      "docs": "",
+      "usage": "<!-- Trigger -->\n<button data-paz-modal=\"demo-modal\">Open modal</button>\n\n<!-- Modal (no close button needed — it's injected) -->\n<div id=\"demo-modal\" class=\"paz-modal\">\n  <div class=\"paz-modal-card\">\n    Your content here…\n  </div>\n</div>"
+    },
+    "carousel": {
+      "name": "Carousel",
+      "description": "Touch-enabled slider with autoplay, infinite loop, dots, and responsive breakpoints.",
+      "status": "experimental",
+      "note": "No public init is exposed yet (defines initSlider() internally). Not drop-in ready — wiring pending."
+    },
+    "accordion": {
+      "hidden": true
+    }
+  }
+}

@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var DEFAULTS = {
+  const DEFAULTS = {
     apiBase: "https://webflow-cms-api-ten.vercel.app",
     fields: ["name", "slug"],
     ttl: 10 * 60 * 1000,
@@ -10,10 +10,10 @@
   // Resolve once the selector exists in the DOM (handles late/injected elements).
   function waitForEl(selector, timeout) {
     return new Promise(function (resolve) {
-      var el = document.querySelector(selector);
-      if (el) return resolve(el);
-      var obs = new MutationObserver(function () {
-        var found = document.querySelector(selector);
+      const existing = document.querySelector(selector);
+      if (existing) return resolve(existing);
+      const obs = new MutationObserver(function () {
+        const found = document.querySelector(selector);
         if (found) { obs.disconnect(); resolve(found); }
       });
       obs.observe(document.documentElement, { childList: true, subtree: true });
@@ -34,9 +34,9 @@
 
   function readCache(key, ttl) {
     try {
-      var raw = localStorage.getItem(key);
+      const raw = localStorage.getItem(key);
       if (!raw) return null;
-      var parsed = JSON.parse(raw);
+      const parsed = JSON.parse(raw);
       if (Date.now() - parsed.ts > ttl) return null;
       return parsed.items;
     } catch (e) {
@@ -51,11 +51,11 @@
   }
 
   function loadCollection(cfg) {
-    var key = cacheKey(cfg);
-    var cached = readCache(key, cfg.ttl);
+    const key = cacheKey(cfg);
+    const cached = readCache(key, cfg.ttl);
     if (cached) return Promise.resolve(cached);
 
-    var url =
+    const url =
       cfg.apiBase +
       "/api/search/" +
       encodeURIComponent(cfg.collection) +
@@ -68,7 +68,7 @@
         return res.json();
       })
       .then(function (json) {
-        var items = (json.data && json.data.items) || [];
+        const items = (json.data && json.data.items) || [];
         writeCache(key, items);
         return items;
       });
@@ -94,9 +94,9 @@
     this.activeIndex = -1;
     this.timer = null;
 
-    var self = this;
+    const self = this;
     this.records = (opts.items || []).map(function (item) {
-      var text = opts.searchFields
+      const text = opts.searchFields
         ? opts.searchFields
             .map(function (f) {
               return (item.fieldData && item.fieldData[f]) || "";
@@ -116,11 +116,11 @@
   }
 
   CMSSearch.prototype.bind = function () {
-    var self = this;
+    const self = this;
 
     this.input.addEventListener("input", function (e) {
       self.activeIndex = -1;
-      var q = e.target.value.trim();
+      const q = e.target.value.trim();
       clearTimeout(self.timer);
       if (q.length < self.minQuery) return self.hide();
       self.timer = setTimeout(function () {
@@ -138,7 +138,7 @@
       } else if (e.key === "Enter") {
         e.preventDefault();
         e.stopPropagation();
-        var items = self.items();
+        const items = self.items();
         if (self.activeIndex >= 0 && items[self.activeIndex]) {
           window.location.href = items[self.activeIndex].href;
         }
@@ -153,10 +153,10 @@
   };
 
   CMSSearch.prototype.query = function (q) {
-    var needle = q.toLowerCase();
-    var hits = [];
-    for (var i = 0; i < this.records.length && hits.length < this.maxResults; i++) {
-      var idx = this.records[i].haystack.indexOf(needle);
+    const needle = q.toLowerCase();
+    const hits = [];
+    for (let i = 0; i < this.records.length && hits.length < this.maxResults; i++) {
+      const idx = this.records[i].haystack.indexOf(needle);
       if (idx !== -1) hits.push({ rec: this.records[i], idx: idx });
     }
     hits.sort(function (a, b) {
@@ -172,25 +172,25 @@
   };
 
   CMSSearch.prototype.move = function (delta) {
-    var items = this.items();
+    const items = this.items();
     if (!items.length) return;
     this.activeIndex = (this.activeIndex + delta + items.length) % items.length;
-    for (var i = 0; i < items.length; i++) {
-      var on = i === this.activeIndex;
+    for (let i = 0; i < items.length; i++) {
+      const on = i === this.activeIndex;
       items[i].classList.toggle("is-active", on);
       if (on) items[i].scrollIntoView({ block: "nearest" });
     }
   };
 
   CMSSearch.prototype.escape = function (t) {
-    var d = document.createElement("div");
+    const d = document.createElement("div");
     d.textContent = t;
     return d.innerHTML;
   };
 
   CMSSearch.prototype.highlight = function (text, q) {
-    var safe = this.escape(text);
-    var rx = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+    const safe = this.escape(text);
+    const rx = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
     return safe.replace(rx, '<span class="highlight">$1</span>');
   };
 
@@ -201,14 +201,14 @@
         '<div class="no-results-title">No results found</div>' +
         '<div class="no-results-subtitle">Try different keywords.</div></div>';
     } else {
-      var self = this;
-      var stats =
+      const self = this;
+      const stats =
         '<div class="search-stats"><div class="search-stats-left"><span>Found ' +
         results.length +
         " result" +
         (results.length !== 1 ? "s" : "") +
         "</span></div></div>";
-      var html = results
+      const html = results
         .map(function (r, i) {
           return (
             '<a href="' +
@@ -245,11 +245,11 @@
   // Public API
   // ----------------------------------------------------------------------
 
-  var WebflowCMS = {
+  const WebflowCMS = {
     init: function (config) {
-      var cfg = {};
-      for (var k in DEFAULTS) cfg[k] = DEFAULTS[k];
-      for (var c in config) cfg[c] = config[c];
+      const cfg = {};
+      for (const k in DEFAULTS) cfg[k] = DEFAULTS[k];
+      for (const c in config) cfg[c] = config[c];
 
       cfg.title = cfg.title || function (i) { return i.fieldData.name; };
       cfg.url = cfg.url || function (i) {
