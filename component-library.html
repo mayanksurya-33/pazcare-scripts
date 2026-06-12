@@ -168,6 +168,28 @@
     }
   ];
 
+  // Clipboard API works in secure contexts (incl. file://) but can be blocked;
+  // fall back to a hidden textarea + execCommand when it isn't available.
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+    }
+    return legacyCopy(text);
+  }
+  function legacyCopy(text) {
+    return new Promise(function (resolve) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      resolve();
+    });
+  }
+
   function embedFor(c) {
     var lines = [];
     if (c.css) lines.push('<link rel="stylesheet" href="' + BASE + c.css + '">');
@@ -193,7 +215,7 @@
     pre.textContent = code;
 
     btn.addEventListener("click", function () {
-      navigator.clipboard.writeText(code).then(function () {
+      copyText(code).then(function () {
         btn.textContent = "Copied!";
         btn.classList.add("copied");
         setTimeout(function () {
