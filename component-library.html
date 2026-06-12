@@ -38,7 +38,7 @@
   }
   .base code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--text); }
 
-  main { padding: 28px 0 64px; }
+  main { padding: 48px 0 64px; }
   .status-msg { text-align: center; color: var(--muted); padding: 48px 0; font-size: 14px; }
 
   .grid {
@@ -226,7 +226,6 @@
     actions.className = "actions";
     if (comp.js) actions.appendChild(copyButton("Script", scriptTag(comp.id)));
     if (comp.css) actions.appendChild(copyButton("CSS", cssTag(comp.id)));
-    if (meta.usage) actions.appendChild(copyButton("Usage", meta.usage));
     actions.appendChild(linkButton("Docs ↗", meta.docs || ""));
     actions.appendChild(linkButton("Code ↗", GH_SRC + comp.id + (comp.js ? ".js" : ".css")));
     card.appendChild(actions);
