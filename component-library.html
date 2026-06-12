@@ -38,13 +38,14 @@
   }
   .base code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--text); }
 
-  main { padding: 48px 0 64px; }
+  main { padding: 0; }
   .status-msg { text-align: center; color: var(--muted); padding: 48px 0; font-size: 14px; }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    padding: 40px 0 10px;
   }
   @media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 720px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
