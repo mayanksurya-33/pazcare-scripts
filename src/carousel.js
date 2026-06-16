@@ -106,11 +106,28 @@ function initSlider(wrapEl, config) {
     }
   }
 
+  // Snap an out-of-range index back into [0, total) without animation.
+  // The clone we were animating toward is visually identical to the real
+  // slide we land on, so this teleport is seamless — but it keeps `current`
+  // bounded so rapid clicks can never run past the clone buffer (blank screen).
+  function recenter() {
+    if (!config.infinite) return;
+    if (current < 0 || current >= total) {
+      current = ((current % total) + total) % total;
+      goTo(current, false);
+      // force reflow so the no-animation snap commits before the next move,
+      // otherwise the browser batches it and animates across the whole strip
+      void track.offsetWidth;
+    }
+  }
+
   function next() {
+    recenter();
     current++;
     goTo(current);
   }
   function prev() {
+    recenter();
     current--;
     goTo(current);
   }
