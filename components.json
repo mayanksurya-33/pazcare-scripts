@@ -1,36 +1,36 @@
 {
-  "_comment": "Source of truth for the component library page. Files in dist/ are auto-discovered; this file adds the human bits (name, description, usage, docs). Add an entry keyed by the component's file basename. Omit an entry and the component still appears with embed tags only. Set hidden:true to suppress (e.g. stubs).",
+  "_comment": "Source of truth for the component library page. Files in dist/ are auto-discovered; this file adds the human bits (name, description, usage, docs). 'usage' is the full per-page snippet using the site-wide loader (pazUse) — the loader lives in the Webflow global footer and pulls each component from the CDN at its registry version, auto-loading CSS where needed. Add an entry keyed by the component's file basename. Omit an entry and the component still appears with embed tags only. Set hidden:true to suppress (e.g. stubs).",
   "components": {
-    "searchbar": {
-      "name": "CMS Searchbar",
-      "description": "Client-side search over a Webflow CMS collection. Fetches once, caches in localStorage, filters in-browser. Enter is blocked so Webflow's search page never hijacks it.",
+    "tabs": {
+      "name": "Tabs",
+      "description": "Accessible tabbed panels, matched by ORDER — the Nth .paz-tab button shows the Nth .paz-tab-panel, so no ids or data attributes to maintain. First tab opens by default (or mark one with data-paz-default). Arrow keys move between tabs (Home/End jump to ends); panels fade in. Style everything yourself — the script only toggles an is-active class on the active tab + panel.",
       "docs": "",
-      "usage": "<div class=\"search-container\">\n  <input id=\"searchInput\" type=\"text\" placeholder=\"Search...\" />\n  <div id=\"searchResults\"></div>\n</div>\n\n<script>\n  WebflowCMS.init({\n    collection: 'hr-glossaries',\n    fields: ['name', 'slug', 'summary', 'meta-description'],\n    saveTo: 'glossaryData',\n    search: { input: '#searchInput', results: '#searchResults' },\n  });\n<\/script>"
-    },
-    "glossary": {
-      "name": "Glossary Renderer",
-      "description": "Renders a CMS collection as an A–Z accordion glossary, with a built-in loading spinner that clears itself when content arrives.",
-      "dependsOn": "Requires the CMS Searchbar script — it uses WebflowCMS to load the data.",
-      "docs": "",
-      "usage": "<div id=\"paz-gloss-container\"></div>\n\n<script>\n  document.addEventListener('DOMContentLoaded', function () {\n    PazGlossary.renderLoading('#paz-gloss-container', 'Loading glossary…');\n\n    WebflowCMS.init({\n      collection: 'hr-glossaries',\n      fields: ['name', 'slug', 'summary', 'meta-description'],\n      saveTo: 'glossaryData',\n      search: { input: '#searchInput', results: '#searchResults' },\n      onLoad: function (items) {\n        PazGlossary.render({\n          container: '#paz-gloss-container',\n          data: items,\n          slugBase: '/hr-glossaries/',\n          defaultOpen: 'all',\n        });\n      },\n    });\n  });\n<\/script>"
+      "usage": "<!-- Markup -->\n<div class=\"paz-tabs\">\n  <div class=\"paz-tab-nav\">\n    <a class=\"paz-tab\">Plans</a>   <!-- 1st button -->\n    <a class=\"paz-tab\">Claims</a>  <!-- 2nd button -->\n  </div>\n\n  <div class=\"paz-tab-panel\">Plans content…</div>   <!-- 1st panel -->\n  <div class=\"paz-tab-panel\">Claims content…</div>  <!-- 2nd panel -->\n</div>\n\n<!-- Style the active state on the is-active combo: .paz-tab.is-active -->\n<!-- In the page footer (loader is already in the global footer) -->\n<script>\n  pazUse('tabs');\n  // Optional: open the 2nd tab (index 1) from code -> PazTabs.open(1);\n<\/script>"
     },
     "modal": {
       "name": "Modal",
       "description": "Accessible modal engine. Auto-injects the close button (no need to add one per modal), closes on overlay click, Esc, or any [data-paz-modal-close]. Open via a data attribute or PazModal.open('id').",
       "docs": "",
-      "usage": "<!-- Trigger -->\n<button data-paz-modal=\"demo-modal\">Open modal</button>\n\n<!-- Modal (no close button needed — it's injected) -->\n<div id=\"demo-modal\" class=\"paz-modal\">\n  <div class=\"paz-modal-card\">\n    Your content here…\n  </div>\n</div>"
+      "usage": "<!-- Trigger -->\n<button data-paz-modal=\"demo-modal\">Open modal</button>\n\n<!-- Modal (no close button needed — it's injected) -->\n<div id=\"demo-modal\" class=\"paz-modal\">\n  <div class=\"paz-modal-card\">\n    Your content here…\n  </div>\n</div>\n\n<!-- In the page footer -->\n<script>\n  pazUse('modal');  // CSS is auto-loaded by the loader\n<\/script>"
     },
     "carousel": {
       "name": "Carousel",
-      "description": "Touch-enabled slider with autoplay, infinite loop, dots, and responsive breakpoints.",
-      "status": "experimental",
-      "note": "No public init is exposed yet (defines initSlider() internally). Not drop-in ready — wiring pending."
-    },
-    "tabs": {
-      "name": "Tabs",
-      "description": "Accessible tabbed panels, matched by ORDER — the Nth .paz-tab button shows the Nth .paz-tab-panel, so no ids or data attributes to maintain. First tab opens by default (or mark one with data-paz-default). Arrow keys move between tabs (Home/End jump to ends); panels fade in. Style everything yourself — the script only toggles an is-active class on the active tab + panel and a built-in fade.",
+      "description": "Touch-enabled slider with autoplay, infinite loop, dots, and responsive breakpoints. Call initSlider(wrapEl, config) once per carousel — pass it as the pazUse callback so it runs after the script loads.",
       "docs": "",
-      "usage": "<div class=\"paz-tabs\">\n  <div class=\"paz-tab-nav\">\n    <a class=\"paz-tab\">Plans</a>   <!-- 1st button -->\n    <a class=\"paz-tab\">Claims</a>  <!-- 2nd button -->\n  </div>\n\n  <div class=\"paz-tab-panel\">Plans content…</div>   <!-- 1st panel -->\n  <div class=\"paz-tab-panel\">Claims content…</div>  <!-- 2nd panel -->\n</div>\n\n<!-- Style the active state on the is-active combo: .paz-tab.is-active -->\n<!-- Optional: open the 2nd tab (index 1) from code -->\n<script>PazTabs.open(1);<\/script>"
+      "usage": "<div class=\"paz-carousel-wrap\">\n  <div class=\"paz-carousel-track\">\n    <div class=\"paz-carousel-list\">\n      <div class=\"paz-carousel-slide\">…</div>\n      <div class=\"paz-carousel-slide\">…</div>\n      <div class=\"paz-carousel-slide\">…</div>\n    </div>\n  </div>\n  <button data-carousel-btn=\"prev\">‹</button>\n  <button data-carousel-btn=\"next\">›</button>\n  <div class=\"paz-carousel-dots-container\"></div>\n</div>\n\n<!-- In the page footer -->\n<script>\n  pazUse('carousel', function () {\n    initSlider(document.querySelector('.paz-carousel-wrap'), {\n      visible: 3,     // slides shown at once\n      gap: 32,        // px between slides\n      speed: 500,     // transition ms\n      infinite: true, // loop\n      dots: true,     // show dots\n      arrow: true,    // show prev/next buttons\n      autoPlay: 0,    // seconds between auto-advances (0 = off)\n      breakpoints: { 768: { visible: 1 } },\n    });\n  });\n<\/script>"
+    },
+    "searchbar": {
+      "name": "CMS Searchbar",
+      "description": "Client-side search over a Webflow CMS collection. Fetches once, caches in localStorage, filters in-browser. Enter is blocked so Webflow's search page never hijacks it.",
+      "docs": "",
+      "usage": "<div class=\"search-container\">\n  <input id=\"searchInput\" type=\"text\" placeholder=\"Search...\" />\n  <div id=\"searchResults\"></div>\n</div>\n\n<!-- In the page footer -->\n<script>\n  pazUse('searchbar', function () {\n    WebflowCMS.init({\n      collection: 'hr-glossaries',\n      fields: ['name', 'slug', 'summary', 'meta-description'],\n      saveTo: 'glossaryData',\n      search: { input: '#searchInput', results: '#searchResults' },\n    });\n  });\n<\/script>"
+    },
+    "glossary": {
+      "name": "Glossary Renderer",
+      "description": "Renders a CMS collection as an A–Z accordion glossary, with a built-in loading spinner that clears itself when content arrives.",
+      "dependsOn": "Requires the CMS Searchbar script — load it first (nest pazUse) so WebflowCMS exists.",
+      "docs": "",
+      "usage": "<div id=\"paz-gloss-container\"></div>\n\n<!-- In the page footer — searchbar loads first, then glossary -->\n<script>\n  pazUse('searchbar', function () {\n    pazUse('glossary', function () {\n      PazGlossary.renderLoading('#paz-gloss-container', 'Loading glossary…');\n\n      WebflowCMS.init({\n        collection: 'hr-glossaries',\n        fields: ['name', 'slug', 'summary', 'meta-description'],\n        saveTo: 'glossaryData',\n        onLoad: function (items) {\n          PazGlossary.render({\n            container: '#paz-gloss-container',\n            data: items,\n            slugBase: '/hr-glossaries/',\n            defaultOpen: 'all',\n          });\n        },\n      });\n    });\n  });\n<\/script>"
     },
     "accordion": {
       "hidden": true

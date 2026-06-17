@@ -105,7 +105,7 @@
   <header>
     <div class="wrap">
       <h1>Pazcare Component Library</h1>
-      <p>Live from GitHub — components auto-discovered from <code>dist/</code>.</p>
+      <p>Live from GitHub — components auto-discovered from <code>dist/</code>. Hit <strong>Copy usage</strong> and paste into the page; the site-wide loader pulls the component from the CDN via <code>pazUse()</code>.</p>
       <div class="base">CDN base: <code id="base"></code></div>
     </div>
   </header>
@@ -225,6 +225,9 @@
 
     const actions = document.createElement("div");
     actions.className = "actions";
+    // Primary: the full per-page snippet using the site-wide loader (pazUse).
+    if (meta.usage) actions.appendChild(copyButton("Copy usage", meta.usage));
+    // Secondary: raw direct CDN tags, for use without the loader.
     if (comp.js) actions.appendChild(copyButton("Script", scriptTag(comp.id)));
     if (comp.css) actions.appendChild(copyButton("CSS", cssTag(comp.id)));
     actions.appendChild(linkButton("Docs ↗", meta.docs || ""));
