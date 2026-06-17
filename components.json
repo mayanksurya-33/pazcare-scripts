@@ -26,6 +26,12 @@
       "status": "experimental",
       "note": "No public init is exposed yet (defines initSlider() internally). Not drop-in ready — wiring pending."
     },
+    "tabs": {
+      "name": "Tabs",
+      "description": "Accessible tabbed panels, matched by ORDER — the Nth .paz-tab button shows the Nth .paz-tab-panel, so no ids or data attributes to maintain. First tab opens by default (or mark one with data-paz-default). Arrow keys move between tabs (Home/End jump to ends); panels fade in. Style everything yourself — the script only toggles an is-active class on the active tab + panel and a built-in fade.",
+      "docs": "",
+      "usage": "<div class=\"paz-tabs\">\n  <div class=\"paz-tab-nav\">\n    <a class=\"paz-tab\">Plans</a>   <!-- 1st button -->\n    <a class=\"paz-tab\">Claims</a>  <!-- 2nd button -->\n  </div>\n\n  <div class=\"paz-tab-panel\">Plans content…</div>   <!-- 1st panel -->\n  <div class=\"paz-tab-panel\">Claims content…</div>  <!-- 2nd panel -->\n</div>\n\n<!-- Style the active state on the is-active combo: .paz-tab.is-active -->\n<!-- Optional: open the 2nd tab (index 1) from code -->\n<script>PazTabs.open(1);<\/script>"
+    },
     "accordion": {
       "hidden": true
     }
