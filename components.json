@@ -32,6 +32,13 @@
       "docs": "",
       "usage": "<div id=\"paz-gloss-container\"></div>\n\n<!-- In the page footer — searchbar loads first, then glossary -->\n<script>\n  pazUse('searchbar', function () {\n    pazUse('glossary', function () {\n      PazGlossary.renderLoading('#paz-gloss-container', 'Loading glossary…');\n\n      WebflowCMS.init({\n        collection: 'hr-glossaries',\n        fields: ['name', 'slug', 'summary', 'meta-description'],\n        saveTo: 'glossaryData',\n        onLoad: function (items) {\n          PazGlossary.render({\n            container: '#paz-gloss-container',\n            data: items,\n            slugBase: '/hr-glossaries/',\n            defaultOpen: 'all',\n          });\n        },\n      });\n    });\n  });\n<\/script>"
     },
+    "slider": {
+      "name": "Marquee Slider",
+      "description": "Infinite auto-scrolling strip for logos, testimonials, etc. Pure-CSS scroll that pauses on hover and fades at both edges. Set the pace with data-speed (seconds per loop). The script duplicates your items once so the loop is seamless — add each item only once.",
+      "css": true,
+      "docs": "",
+      "usage": "<div class=\"paz-slider-wrapper\" data-speed=\"20\">\n  <div class=\"paz-slider-track\">\n    <div class=\"paz-slider-item\">Logo 1</div>\n    <div class=\"paz-slider-item\">Logo 2</div>\n    <div class=\"paz-slider-item\">Logo 3</div>\n  </div>\n</div>\n\n<!-- In the page footer (CSS auto-loads). data-speed = seconds per loop. -->\n<!-- If your markup is already duplicated, add data-paz-clone=\"false\". -->\n<script>\n  pazUse('slider');\n<\/script>"
+    },
     "accordion": {
       "hidden": true
     }

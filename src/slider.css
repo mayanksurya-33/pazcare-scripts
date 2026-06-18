@@ -1,0 +1,30 @@
+/* PazSlider — infinite auto-scrolling marquee. The scroll, hover-pause and
+   edge fade are pure CSS; slider.js only sets per-instance speed and (by
+   default) duplicates the items so the -50% loop is seamless. */
+.paz-slider-wrapper {
+  overflow: hidden;
+  /* fade the left/right edges */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.paz-slider-track {
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  animation: paz-scroll 20s linear infinite; /* default speed; data-speed overrides */
+}
+
+/* pause while hovering the strip */
+.paz-slider-wrapper:hover .paz-slider-track {
+  animation-play-state: paused;
+}
+
+@keyframes paz-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
