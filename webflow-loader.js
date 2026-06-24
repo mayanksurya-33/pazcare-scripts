@@ -16,10 +16,10 @@
 
   // ---- single source of truth: one version per component ----
   const VERSIONS = {
-    carousel:  "1.0",
+    carousel:  "1.1",
     modal:     "1.0",
     searchbar: "1.0",
-    glossary:  "1.0",
+    glossary:  "1.1",
     tabs:      "1.0",
     slider:    "1.0",
   };

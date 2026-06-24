@@ -84,8 +84,11 @@ function initSlider(wrapEl, config) {
   }
 
   function getOffset(idx) {
-    const { visible, gap } = getActiveConfig();
-    return (config.infinite ? idx + visible : idx) * (slideWidth() + gap);
+    const { gap } = getActiveConfig();
+    // setupInfinite() prepends maxVisible() clones, so skip that many — NOT the
+    // active breakpoint's `visible`, which only matches on the top breakpoint
+    // and otherwise leaves the track resting inside the clone region.
+    return (config.infinite ? idx + maxVisible() : idx) * (slideWidth() + gap);
   }
 
   function goTo(idx, animate = true) {
@@ -134,8 +137,9 @@ function initSlider(wrapEl, config) {
 
   function startDotFill() {
     const { autoPlay } = getActiveConfig();
-    if (!autoPlay || !dotsWrap) return;
+    if (!dotsWrap) return;
     clearInterval(fillTimer);
+    resetFills(); // clear any half-filled dots from interrupted moves first
 
     const idx = ((current % total) + total) % total;
     const activeDot = dotsWrap.querySelectorAll("." + DOT_CLASS)[idx];
@@ -143,6 +147,13 @@ function initSlider(wrapEl, config) {
 
     const fillEl = activeDot.querySelector("." + DOT_FILL_CLASS);
     if (!fillEl) return;
+
+    // Autoplay off: no countdown to animate — keep the active dot filled so it
+    // still shows its color (only the active one; the rest were just reset).
+    if (!autoPlay) {
+      fillEl.style.width = "100%";
+      return;
+    }
 
     const steps = 100;
     const interval = (autoPlay * 1000) / steps;
@@ -172,6 +183,7 @@ function initSlider(wrapEl, config) {
       d.className = DOT_CLASS + (i === 0 ? ` ${DOT_ACTIVE_CLASS}` : "");
       const fill = document.createElement("span");
       fill.className = DOT_FILL_CLASS;
+      fill.style.width = "0%"; // start empty regardless of CSS default
       d.appendChild(fill);
       d.addEventListener("click", () => {
         clearInterval(fillTimer);
@@ -262,6 +274,7 @@ function initSlider(wrapEl, config) {
     resizeTimer = setTimeout(() => {
       setWidths();
       buildDots();
+      updateDots(); // re-mark the active dot (buildDots resets it to slide 0)
       goTo(current, false);
     }, 100);
   });

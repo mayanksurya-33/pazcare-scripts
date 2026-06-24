@@ -81,7 +81,10 @@
   }
 
   function buildCard(item, cfg) {
-    const card = el('div', 'paz-glossary-card');
+    // The whole card is now a link (was a div wrapping a separate read-more
+    // anchor). Falls back to "#" when an item has no slug.
+    const href = item.slug ? cfg.slugBase + item.slug : '#';
+    const card = el('a', 'paz-glossary-card w-inline-block', { href: href });
 
     const h = el('h1', 'heading-style-h5');
     h.textContent = item.name;
@@ -93,17 +96,18 @@
       card.appendChild(p);
     }
 
-    if (cfg.showReadMore && item.slug) {
-      const a = el('a', 'paz-link text-color-primary w-inline-block',
-                { href: cfg.slugBase + item.slug });
+    if (cfg.showReadMore) {
+      // Read-more is now a plain div — the card itself carries the href.
+      // mt-auto keeps it bottom-aligned so cards in a row line up.
+      const link = el('div', 'paz-link text-color-primary mt-auto');
       const flex = el('div', 'flex sb');
       const label = el('p', 'text-size-regular');
       label.textContent = cfg.readMoreText;
       const arrow = el('img', null, { src: cfg.icons.arrow, loading: 'lazy', alt: '' });
       flex.appendChild(label);
       flex.appendChild(arrow);
-      a.appendChild(flex);
-      card.appendChild(a);
+      link.appendChild(flex);
+      card.appendChild(link);
     }
     return card;
   }
