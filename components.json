@@ -40,7 +40,11 @@
       "usage": "<div class=\"paz-slider-wrapper\" data-speed=\"20\">\n  <div class=\"paz-slider-track\">\n    <div class=\"paz-slider-item\">Logo 1</div>\n    <div class=\"paz-slider-item\">Logo 2</div>\n    <div class=\"paz-slider-item\">Logo 3</div>\n  </div>\n</div>\n\n<!-- In the page footer (CSS auto-loads). data-speed = seconds per loop. -->\n<!-- If your markup is already duplicated, add data-paz-clone=\"false\". -->\n<script>\n  pazUse('slider');\n<\/script>"
     },
     "accordion": {
-      "hidden": true
+      "name": "FAQ Accordion",
+      "description": "Click a .paz-faq-elem to expand/collapse its .paz-faq-answer; the +/- icon (.paz-faq-btn-wrapper) rotates. CSS-driven open/close via a data-state attribute. Click delegation, so it works for items added later and when loaded late by the loader.",
+      "css": true,
+      "docs": "",
+      "usage": "<div class=\"paz-faq-elem\" data-state=\"closed\">\n  <div class=\"paz-faq-question\">\n    <h3>Your question?</h3>\n    <div class=\"paz-faq-btn-wrapper\">+</div>\n  </div>\n  <div class=\"paz-faq-answer\">\n    <div class=\"w-richtext\"><p>Your answer…</p></div>\n  </div>\n</div>\n\n<!-- In the page footer (CSS auto-loads via the loader) -->\n<script>\n  pazUse('accordion');\n<\/script>"
     }
   }
 }

@@ -1,3 +1,27 @@
-.abc{
-    width: 100px;
+/* PazAccordion (FAQ) — open/close driven by [data-state] on .paz-faq-elem.
+   Smooth height animation with no fixed cap: interpolate-size lets max-height
+   transition to/from the max-content keyword, so answers of any length animate
+   without clipping. Supported in Chromium 129+ (Chrome/Edge); browsers without
+   it still open/close correctly, just without the height animation. */
+:root {
+  /* opt the whole page in to animating sizes to/from intrinsic keywords */
+  interpolate-size: allow-keywords;
+}
+.paz-faq-answer {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+}
+.paz-faq-elem[data-state='open'] .paz-faq-answer {
+  max-height: max-content;
+}
+.paz-faq-btn-wrapper {
+  transform: rotate(45deg);
+  transition: transform 0.5s ease;
+}
+.paz-faq-elem[data-state='open'] .paz-faq-btn-wrapper {
+  transform: rotate(-360deg);
+}
+.paz-faq-answer .w-richtext p {
+  margin-bottom: 0;
 }
