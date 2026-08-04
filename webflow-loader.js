@@ -21,7 +21,7 @@
     searchbar: "1.0",
     glossary:  "1.1",
     tabs:      "1.0",
-    slider:    "1.0",
+    slider:    "1.1",
     accordion: "1.0",
   };
 

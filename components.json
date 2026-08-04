@@ -34,10 +34,10 @@
     },
     "slider": {
       "name": "Marquee Slider",
-      "description": "Infinite auto-scrolling strip for logos, testimonials, etc. Pure-CSS scroll that pauses on hover and fades at both edges. Set the pace with data-speed (seconds per loop). The script duplicates your items once so the loop is seamless — add each item only once.",
+      "description": "Infinite auto-scrolling strip for logos, testimonials, etc. Two modes, picked with data-slider on the wrapper. Default (attribute absent) is the pure-CSS marquee: continuous scroll, pauses on hover, fades at both edges, paced by data-speed (seconds per loop). data-slider=\"steps\" is EXPERIMENTAL — it advances one item at a time with a dwell between steps, still pauses on hover, and can be dragged back and forth by mouse or touch (it snaps to the nearest item and resumes). The script duplicates your items so the strip stays full — add each item only once.",
       "css": true,
       "docs": "",
-      "usage": "<div class=\"paz-slider-wrapper\" data-speed=\"20\">\n  <div class=\"paz-slider-track\">\n    <div class=\"paz-slider-item\">Logo 1</div>\n    <div class=\"paz-slider-item\">Logo 2</div>\n    <div class=\"paz-slider-item\">Logo 3</div>\n  </div>\n</div>\n\n<!-- In the page footer (CSS auto-loads). data-speed = seconds per loop. -->\n<!-- If your markup is already duplicated, add data-paz-clone=\"false\". -->\n<script>\n  pazUse('slider');\n<\/script>"
+      "usage": "<!-- MODE 1 (default): continuous marquee -->\n<div class=\"paz-slider-wrapper\" data-speed=\"20\">\n  <div class=\"paz-slider-track\">\n    <div class=\"paz-slider-item\">Logo 1</div>\n    <div class=\"paz-slider-item\">Logo 2</div>\n    <div class=\"paz-slider-item\">Logo 3</div>\n  </div>\n</div>\n\n<!-- MODE 2 (experimental): steps one item at a time, draggable -->\n<div class=\"paz-slider-wrapper\" data-slider=\"steps\"\n     data-step-interval=\"2500\"  <!-- ms to wait between steps -->\n     data-step-duration=\"500\">  <!-- ms for the slide itself -->\n  <div class=\"paz-slider-track\">\n    <div class=\"paz-slider-item\">Card 1</div>\n    <div class=\"paz-slider-item\">Card 2</div>\n    <div class=\"paz-slider-item\">Card 3</div>\n  </div>\n</div>\n\n<!-- In the page footer (CSS auto-loads). Both modes pause on hover. -->\n<!-- If your markup is already duplicated, add data-paz-clone=\"false\". -->\n<script>\n  pazUse('slider');\n<\/script>"
     },
     "accordion": {
       "name": "FAQ Accordion",

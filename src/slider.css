@@ -28,3 +28,33 @@
     transform: translateX(-50%);
   }
 }
+
+/* ---- stepped mode (experimental): data-slider="steps" ----
+   JS drives the transform one item at a time, so the CSS animation above must
+   be off; hover-pause and drag are handled in slider.js too. */
+.paz-slider-wrapper[data-slider="steps"] .paz-slider-track {
+  animation: none;
+  will-change: transform;
+  cursor: grab;
+  touch-action: pan-y; /* vertical page scroll still works on touch */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.paz-slider-wrapper[data-slider="steps"] .paz-slider-track.is-dragging {
+  cursor: grabbing;
+}
+
+/* Each item sizes to its own content and never stretches or squashes. Without
+   this, an item left at width:100% resolves against the wrapper, so every
+   "one item" step moves a whole viewport. Set an explicit width on
+   .paz-slider-item if you want a fixed slide size. */
+.paz-slider-wrapper[data-slider="steps"] .paz-slider-item,
+.paz-slider-wrapper[data-slider="steps"] .paz-slider-list-item {
+  flex: 0 0 auto;
+}
+
+/* stop the browser's native image drag from hijacking the gesture */
+.paz-slider-wrapper[data-slider="steps"] .paz-slider-track img {
+  -webkit-user-drag: none;
+}
