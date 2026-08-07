@@ -61,9 +61,30 @@ function initSlider(wrapEl, config) {
     return Math.max(config.visible, ...bpValues);
   }
 
+  // Is a peek configured anywhere (base config or any breakpoint)? Used to
+  // size the clone buffer, which has to be decided once up front.
+  function anyPeek() {
+    const values = [config.peek || 0];
+    if (config.breakpoints) {
+      Object.values(config.breakpoints).forEach((b) => values.push(b.peek || 0));
+    }
+    return Math.max(...values) > 0;
+  }
+
+  // How many slides are cloned on each end for the infinite loop. With a peek
+  // there's one extra partially-visible slot on the right, so clone one more —
+  // otherwise that sliver is blank while animating past the last slide.
+  function cloneCount() {
+    return maxVisible() + (config.infinite && anyPeek() ? 1 : 0);
+  }
+
   function slideWidth() {
-    const { visible, gap } = getActiveConfig();
-    return (trackWrap.offsetWidth - gap * (visible - 1)) / visible;
+    const { visible, gap, peek = 0 } = getActiveConfig();
+    // peek = px of the NEXT slide left showing at the right edge. Reserve that
+    // strip plus the gap in front of it; with peek 0 the last visible slide
+    // sits flush against the edge and this is the original calculation.
+    const reserved = peek > 0 ? gap + peek : 0;
+    return Math.max(1, (trackWrap.offsetWidth - gap * (visible - 1) - reserved) / visible);
   }
 
   function setWidths() {
@@ -76,19 +97,20 @@ function initSlider(wrapEl, config) {
   }
 
   function setupInfinite() {
-    const cloneCount = maxVisible();
-    const cloneStart = slides.slice(-cloneCount).map((s) => s.cloneNode(true));
-    const cloneEnd = slides.slice(0, cloneCount).map((s) => s.cloneNode(true));
+    const n = cloneCount();
+    const cloneStart = slides.slice(-n).map((s) => s.cloneNode(true));
+    const cloneEnd = slides.slice(0, n).map((s) => s.cloneNode(true));
     cloneStart.forEach((c) => track.insertBefore(c, track.firstChild));
     cloneEnd.forEach((c) => track.appendChild(c));
   }
 
   function getOffset(idx) {
     const { gap } = getActiveConfig();
-    // setupInfinite() prepends maxVisible() clones, so skip that many — NOT the
+    // setupInfinite() prepends cloneCount() clones, so skip that many — NOT the
     // active breakpoint's `visible`, which only matches on the top breakpoint
-    // and otherwise leaves the track resting inside the clone region.
-    return (config.infinite ? idx + maxVisible() : idx) * (slideWidth() + gap);
+    // and otherwise leaves the track resting inside the clone region. Must stay
+    // in step with setupInfinite(), hence the shared cloneCount().
+    return (config.infinite ? idx + cloneCount() : idx) * (slideWidth() + gap);
   }
 
   function goTo(idx, animate = true) {

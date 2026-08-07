@@ -3,6 +3,13 @@
 Component versions match the `VERSIONS` registry in `webflow-loader.js`.
 Add an entry when you bump a component's version.
 
+## carousel 1.2 — 2026-08-07
+- New `peek` config (px, default 0): leaves that much of the NEXT slide visible at the right edge as a "there's more" hint. Slides shrink to make room — `peek` reserves the strip plus the gap in front of it, so `visible` full slides + gaps + `peek` add up to the track width exactly.
+- Works per breakpoint like any other option (`breakpoints: { 768: { visible: 1, peek: 24 } }`).
+- With `infinite`, one extra slide is cloned on each end when a peek is configured anywhere — the peek slot sits one position further right, and without the extra clone it showed a blank sliver while animating past the last slide. `setupInfinite()` and `getOffset()` now share a single `cloneCount()` so they can't drift apart.
+- Slide width is clamped to at least 1px, so an oversized `peek` can't produce negative widths.
+- `peek: 0` (or omitting it) is byte-for-byte the 1.1 sizing and clone count — existing carousels are unaffected.
+
 ## slider 1.1 — 2026-07-31
 - New **experimental** stepped mode, opt in with `data-slider="steps"` on the wrapper. Advances one item at a time with a dwell between steps instead of scrolling continuously.
   - `data-step-interval` (ms between steps, default 2500), `data-step-duration` (ms per slide, default 500), `data-step-easing` (any CSS timing function, default `cubic-bezier(0.4, 0, 0.2, 1)`).
