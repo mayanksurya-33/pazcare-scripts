@@ -3,6 +3,26 @@
 Component versions match the `VERSIONS` registry in `webflow-loader.js`.
 Add an entry when you bump a component's version.
 
+## loop 1.0 — 2026-09-03
+- New component: an auto-advancing one-way loop for a stack of content blocks, one item at a time. Extracted from the inline embed on the platform section and split into `loop.js` + `loop.css`.
+- Built for loops that live inside a **hidden tab panel**, which is what rules out the obvious implementations. No clones and no pixel measurement: items are `flex: 0 0 100%` inside a `width: 100%` track, so `translateX(-k*100%)` is exactly k items whatever the container is doing. A `display: none` panel measures 0, so anything measured would resolve to 0 and strand the track off-screen.
+- The step is timed rather than driven by `transitionend`. That event bubbles from content inside the items, and never fires at all if the tab is hidden mid-step — which left the track stuck at `-100%` forever.
+- Rotates DOM instead of tracking an index: after each step the leading items move to the end and the track snaps back to 0.
+- Indicator dots are generated (no markup needed) and hide with `data-dots="false"`. Colours via `data-dot-color` / `data-dot-fill`, applied as custom properties so `loop.css` keeps the defaults (`#fff` / `#9d72ff`) and a page can retheme without a specificity fight. The active dot carries a white ring so the fill reads on any card colour, and the dots row has 2px of padding so that ring isn't clipped by the wrapper's `overflow: hidden`.
+- Clicking a dot animates rather than snapping, and takes the shorter way round — dot 3 of 6 from dot 4 slides back one item, not forward five. Backwards works by moving k nodes to the front and starting the track at `-k*100%` with no transition, so animating to 0 slides rightward; the reshuffle is never visible. Duration scales sub-linearly (`speed + (k-1)*100`, capped at 900ms) so a long jump doesn't drag.
+- Autoplay and dot clicks share one `slide(k, backward)` path, so the two can't drift apart.
+- Dots know which item is showing because each item is stamped with its original index once at setup — read back off `track.firstElementChild` rather than kept in a counter that could desync from the rotation.
+- Only advances while on screen (IntersectionObserver, 0.2 threshold), so an inactive tab panel never advances where nobody can see it.
+- Dots are `<button type="button">` so they can't submit a surrounding Webflow form, and carry `aria-label` + `aria-current`.
+
+## tabs 1.1 — 2026-09-03
+- Optional per-tab side image, matched by ORDER like everything else in this component: `.paz-tab-media` on a box, `.paz-tab-img` on one image per tab, and the Nth tab shows the Nth image. Was an inline embed (`PazTabMedia`); folded in here because a tab changing its own media is tab-owned behaviour, and a separate script on the page is one more thing to lose to a copy-paste.
+- The media box normally sits **outside** `.paz-tabs` (a sibling column), so it's found by walking up from the group to the first ancestor that contains one. Resolved once per group and cached in a `WeakMap`, so a tab change doesn't re-walk the tree.
+- Hidden with an inline `display: none` for the same reason the panels are: the `hidden` attribute alone only sets `display: none` via the UA stylesheet, which any display rule on the image's own Webflow classes beats.
+- One image per tab rather than swapping `src`, so Webflow's `srcset`/`sizes` stay intact and there's no load flicker mid-switch. The active image also gets `is-active` if you want to style it.
+- Fewer images than tabs is fine — a tab with no image at its index leaves whatever is showing in place, so a section with a single image behaves exactly as it did in 1.0.
+- No markup or behaviour change for tabs without a `.paz-tab-media` box: the feature costs them one cached lookup per group.
+
 ## carousel 1.2 — 2026-08-07
 - New `peek` config (px, default 0): leaves that much of the NEXT slide visible at the right edge as a "there's more" hint. Slides shrink to make room — `peek` reserves the strip plus the gap in front of it, so `visible` full slides + gaps + `peek` add up to the track width exactly.
 - Works per breakpoint like any other option (`breakpoints: { 768: { visible: 1, peek: 24 } }`).

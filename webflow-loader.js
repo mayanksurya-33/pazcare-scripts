@@ -20,13 +20,14 @@
     modal:     "1.0",
     searchbar: "1.0",
     glossary:  "1.1",
-    tabs:      "1.0",
+    tabs:      "1.1",
     slider:    "1.1",
+    loop:      "1.0",
     accordion: "1.0",
   };
 
   const BASE    = "https://cdn.jsdelivr.net/gh/mayanksurya-33/pazcare-scripts@main/dist/";
-  const HAS_CSS = { modal: true, searchbar: true, glossary: true, slider: true, accordion: true }; // carousel & tabs ship no CSS
+  const HAS_CSS = { modal: true, searchbar: true, glossary: true, slider: true, accordion: true, loop: true }; // carousel & tabs ship no CSS
 
   const loaded = {};   // name -> true once its JS has executed
   const queue  = {};   // name -> array of init callbacks waiting on it

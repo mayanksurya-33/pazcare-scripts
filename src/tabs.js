@@ -16,6 +16,25 @@
    First tab opens by default — or mark one button with data-paz-default.
    Arrow keys move between tabs (Home/End jump to the ends).
 
+   OPTIONAL side media, matched the same way: put .paz-tab-media on a box and
+   .paz-tab-img on one image per tab, and the Nth tab shows the Nth image. The
+   box normally sits OUTSIDE .paz-tabs (a sibling column), so it's found by
+   walking up from the group to the first ancestor that contains one. Leave it
+   out and nothing changes — the feature costs a page that doesn't use it one
+   lookup per group.
+
+     <div class="platform-card">
+       <div class="paz-tabs"> … 2 tabs … </div>
+
+       <div class="platform-right paz-tab-media">
+         <img class="paz-tab-img" src="hr.webp">   // 1st tab
+         <img class="paz-tab-img" src="app.webp">  // 2nd tab
+       </div>
+     </div>
+
+   Fewer images than tabs is fine — a tab with no image at its index leaves
+   whatever is showing in place (so a single image just never swaps).
+
    API: PazTabs.open(index [, group])  — activate a tab by its 0-based index.
           group: optional .paz-tabs element or selector (defaults to the first
           tabs group on the page).
@@ -33,10 +52,13 @@
   const TAB_SELECTOR = ".paz-tab";
   const PANEL_SELECTOR = ".paz-tab-panel";
   const NAV_SELECTOR = ".paz-tab-nav";
+  const MEDIA_SELECTOR = ".paz-tab-media";
+  const MEDIA_IMG_SELECTOR = ".paz-tab-img";
   const ACTIVE_CLASS = "is-active";
   const FADE_MS = 220;
 
   let gid = 0; // group counter — used to mint aria ids when none are present
+  const mediaBoxes = new WeakMap(); // group -> media box (or null), resolved once
 
   // Elements matching `sel` that belong to THIS group — not ones nested in a
   // child .paz-tabs group. Document order is preserved, which is exactly what
@@ -83,6 +105,47 @@
     });
   }
 
+  // The media box for a group: the nearest ancestor that contains one. Cached
+  // per group (null included) so a tab change doesn't re-walk the tree.
+  function mediaFor(group) {
+    if (mediaBoxes.has(group)) return mediaBoxes.get(group);
+    let box = null;
+    for (let el = group; el; el = el.parentElement) {
+      box = el.querySelector(MEDIA_SELECTOR);
+      if (box || el === document.body) break;
+    }
+    mediaBoxes.set(group, box);
+    return box;
+  }
+
+  // Show the idx-th .paz-tab-img and hide the rest. Same inline display:none
+  // as the panels, and for the same reason — the `hidden` attribute alone
+  // loses to any display rule on the image's own classes.
+  function syncMedia(group, idx, animate) {
+    const box = mediaFor(group);
+    if (!box) return;
+    const imgs = [...box.querySelectorAll(MEDIA_IMG_SELECTOR)];
+    if (imgs.length < 2 || !imgs[idx]) return; // nothing to swap to
+    imgs.forEach((img, i) => {
+      const on = i === idx;
+      img.classList.toggle(ACTIVE_CLASS, on);
+      img.hidden = !on;
+      img.style.display = on ? "" : "none";
+      if (!on) return;
+      if (!animate) {
+        img.style.transition = "";
+        img.style.opacity = "";
+        return;
+      }
+      img.style.transition = "none";
+      img.style.opacity = "0";
+      requestAnimationFrame(function () {
+        img.style.transition = "opacity " + FADE_MS + "ms ease";
+        img.style.opacity = "1";
+      });
+    });
+  }
+
   // Activate the tab at `idx` within `group`, deactivating the rest. The Nth
   // tab is paired with the Nth panel.
   //   opts.animate — fade the panel in (skipped on the initial sweep).
@@ -104,6 +167,7 @@
         else hidePanel(panel);
       }
     });
+    syncMedia(group, idx, opts.animate);
     if (opts.focus && tabs[idx]) tabs[idx].focus();
     group.dispatchEvent(
       new CustomEvent("paz:tab:change", {

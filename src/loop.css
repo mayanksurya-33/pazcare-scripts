@@ -1,0 +1,51 @@
+/* PazLoop — auto-advancing one-way loop (loop.js drives it).
+
+   The track is exactly one item wide while its children overflow it, which is
+   what makes translateX(-100%) equal exactly one item — no pixel is ever
+   measured, so an item inside a hidden tab panel can't break the layout.
+
+   Dot colours are custom properties so a page can retheme them without
+   fighting specificity: set --paz-dot / --paz-dot-fill on the wrapper (or use
+   the data-dot-color / data-dot-fill attributes, which set them for you). */
+.paz-loop {
+  overflow: hidden;
+}
+.paz-loop-track {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  will-change: transform;
+}
+.paz-loop-item {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+/* ---- indicator dots ---- */
+.paz-loop-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  line-height: 0; /* no inherited text line box */
+  padding: 2px; /* room for the active dot's ring inside .paz-loop's clip */
+}
+.paz-loop-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paz-dot, #fff);
+  opacity: 0.4;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+.paz-loop-dot.is-active {
+  opacity: 1;
+  background: var(--paz-dot-fill, #9d72ff);
+  /* white ring so the purple fill reads on any card colour */
+  box-shadow: 0 0 0 1.5px var(--paz-dot, #fff);
+}
