@@ -16,7 +16,7 @@
     icons: {
       xWhite: 'https://cdn.prod.website-files.com/6145f7146a1337faae24d53f/69e9f8c22d61bca1a3175b18_Vector%20(5).svg',
       xBlack: 'https://cdn.prod.website-files.com/6145f7146a1337faae24d53f/69de0d5958b581d59a83e089_Vector%20(4).svg',
-      arrow:  'https://cdn.prod.website-files.com/6145f7146a1337faae24d53f/69d511e39e1be6e9c01ebf96_Frame%20(5).svg'
+      arrow:  'https://cdn.prod.website-files.com/6145f7146a1337faae24d53f/6ab282ea817aeb82418721d9_arrow-icon.svg'
     }
   };
 

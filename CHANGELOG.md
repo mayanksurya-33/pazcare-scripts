@@ -3,6 +3,9 @@
 Component versions match the `VERSIONS` registry in `webflow-loader.js`.
 Add an entry when you bump a component's version.
 
+## glossary 1.2 — 2026-09-22
+- New Read More arrow icon (`icons.arrow` now points at `6ab282ea…_arrow-icon.svg`, the coral one). Changed at the `DEFAULTS.icons` source rather than at the call site, so a page passing its own `icons.arrow` still overrides it.
+
 ## loop 1.0 — 2026-09-03
 - New component: an auto-advancing one-way loop for a stack of content blocks, one item at a time. Extracted from the inline embed on the platform section and split into `loop.js` + `loop.css`.
 - Built for loops that live inside a **hidden tab panel**, which is what rules out the obvious implementations. No clones and no pixel measurement: items are `flex: 0 0 100%` inside a `width: 100%` track, so `translateX(-k*100%)` is exactly k items whatever the container is doing. A `display: none` panel measures 0, so anything measured would resolve to 0 and strand the track off-screen.

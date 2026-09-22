@@ -19,7 +19,7 @@
     carousel:  "1.2",
     modal:     "1.0",
     searchbar: "1.0",
-    glossary:  "1.1",
+    glossary:  "1.2",
     tabs:      "1.1",
     slider:    "1.1",
     loop:      "1.0",
