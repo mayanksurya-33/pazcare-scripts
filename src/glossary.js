@@ -13,6 +13,7 @@
     includeArchived: false,
     accordion: true,
     defaultOpen: 'none',
+    cardsPerRow: 3,
     icons: {
       xWhite: 'https://cdn.prod.website-files.com/6145f7146a1337faae24d53f/69e9f8c22d61bca1a3175b18_Vector%20(5).svg',
       xBlack: 'https://cdn.prod.website-files.com/6145f7146a1337faae24d53f/69de0d5958b581d59a83e089_Vector%20(4).svg',
@@ -112,6 +113,12 @@
     return card;
   }
 
+  // Invisible spacer that occupies a row slot without showing anything.
+  // A div, not an anchor, so it takes no tab stop and nothing is clickable.
+  function buildFiller() {
+    return el('div', 'paz-glossary-card not-vis', { 'aria-hidden': 'true' });
+  }
+
   function buildGroup(letter, items, cfg, isFirst) {
     const state = cfg.defaultOpen === 'all'                ? 'open'
                 : (cfg.defaultOpen === 'first' && isFirst) ? 'open'
@@ -132,6 +139,14 @@
 
     const content = el('div', 'paz-gloss-content');
     items.forEach(function (it) { content.appendChild(buildCard(it, cfg)); });
+
+    // Pad the final row out to cardsPerRow so every row is full. Without this a
+    // letter holding 5 entries ends on a row of 2 that stretches across the width.
+    const perRow = cfg.cardsPerRow;
+    if (perRow > 1) {
+      const short = (perRow - (items.length % perRow)) % perRow;
+      for (let i = 0; i < short; i++) content.appendChild(buildFiller());
+    }
 
     elem.appendChild(head);
     elem.appendChild(content);

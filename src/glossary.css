@@ -51,3 +51,12 @@
 @keyframes paz-gloss-spin {
   to { transform: rotate(360deg); }
 }
+
+/* Row filler appended by render() so the last row of a letter group still has
+   cardsPerRow slots. visibility, not display, so the slot keeps its width —
+   display:none would collapse it and the padding would do nothing. Scoped to
+   the glossary so it can't fight a site-wide .not-vis defined in Webflow. */
+.paz-gloss-content .paz-glossary-card.not-vis {
+  visibility: hidden;
+  pointer-events: none;
+}
