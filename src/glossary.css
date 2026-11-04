@@ -60,3 +60,21 @@
   visibility: hidden;
   pointer-events: none;
 }
+
+/* Three cards per row. The grid lives here, not in Webflow, so the filler
+   padding in render() has a known column count to pad out to. Two-class
+   selector so it outranks a single-class rule from the site stylesheet.
+   Fillers are dropped below 3 columns — an invisible card in a 2-up or 1-up
+   grid is just an empty slot adding height for nothing. */
+.paz-gloss-elem .paz-gloss-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 991px) {
+  .paz-gloss-elem .paz-gloss-content { grid-template-columns: repeat(2, 1fr); }
+  .paz-gloss-content .paz-glossary-card.not-vis { display: none; }
+}
+@media (max-width: 767px) {
+  .paz-gloss-elem .paz-gloss-content { grid-template-columns: 1fr; }
+}

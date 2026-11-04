@@ -7,6 +7,7 @@ Add an entry when you bump a component's version.
 - Letter groups now pad their last row with invisible filler cards (`div.paz-glossary-card.not-vis`, `aria-hidden`) so every row holds `cardsPerRow` slots — default 3. A letter with 5 entries used to end on a row of 2 stretched across the full width.
 - Fillers are divs rather than anchors, so they add no tab stop and nothing is clickable. `.not-vis` is `visibility: hidden` (not `display: none`, which would collapse the slot and defeat the padding) and scoped under `.paz-gloss-content` so it can't collide with a site-wide `.not-vis` in Webflow.
 - `cardsPerRow` is configurable; set it to 1 to switch the padding off.
+- `.paz-gloss-content` now carries the 3-column grid itself. It was never 3-up in Webflow — a lone card stretched the full width — so the filler padding had no columns to pad into and did nothing visible. Two-class selector so it outranks the site stylesheet; 2-up under 991px and 1-up under 767px, with fillers dropped below 3 columns so they can't add empty height.
 
 ## glossary 1.2 — 2026-09-22
 - New Read More arrow icon (`icons.arrow` now points at `6ab282ea…_arrow-icon.svg`, the coral one). Changed at the `DEFAULTS.icons` source rather than at the call site, so a page passing its own `icons.arrow` still overrides it.
