@@ -87,7 +87,7 @@
     const href = item.slug ? cfg.slugBase + item.slug : '#';
     const card = el('a', 'paz-glossary-card w-inline-block', { href: href });
 
-    const h = el('h1', 'heading-style-h5');
+    const h = el('h3', 'heading-style-h5');
     h.textContent = item.name;
     card.appendChild(h);
 
@@ -127,14 +127,14 @@
     const elem = el('div', 'paz-gloss-elem', { 'data-state': state });
 
     const head = el('div', 'paz-gloss-heading-wrap');
-    const h4 = el('h4', 'heading-style-h4 paz-faq-heading');
-    h4.textContent = letter;
+    const h2 = el('h2', 'heading-style-h4 paz-faq-heading');
+    h2.textContent = letter;
 
     const btn = el('div', 'paz-faq-btn-wrapper');
     btn.appendChild(el('img', 'paz-faq-x-icon white', { src: cfg.icons.xWhite, loading: 'lazy', alt: '' }));
     btn.appendChild(el('img', 'paz-faq-x-icon black', { src: cfg.icons.xBlack, loading: 'lazy', alt: '' }));
 
-    head.appendChild(h4);
+    head.appendChild(h2);
     head.appendChild(btn);
 
     const content = el('div', 'paz-gloss-content');

@@ -3,6 +3,10 @@
 Component versions match the `VERSIONS` registry in `webflow-loader.js`.
 Add an entry when you bump a component's version.
 
+## glossary 1.4 — 2026-11-17
+- Heading levels fixed. Letter headings were `h4` and card titles were `h1`, so every entry was a top-level heading nested inside a lower-level one — the outline read backwards, and a page of 80 terms emitted 80 `h1`s alongside the page's own.
+- Letters are now `h2` and card titles `h3`. The `heading-style-h4` / `heading-style-h5` classes are untouched, so nothing changes visually — those classes carry the type styling in Webflow, independent of the tag.
+
 ## glossary 1.3 — 2026-11-04
 - Letter groups now pad their last row with invisible filler cards (`div.paz-glossary-card.not-vis`, `aria-hidden`) so every row holds `cardsPerRow` slots — default 3. A letter with 5 entries used to end on a row of 2 stretched across the full width.
 - Fillers are divs rather than anchors, so they add no tab stop and nothing is clickable. `.not-vis` is `visibility: hidden` (not `display: none`, which would collapse the slot and defeat the padding) and scoped under `.paz-gloss-content` so it can't collide with a site-wide `.not-vis` in Webflow.
